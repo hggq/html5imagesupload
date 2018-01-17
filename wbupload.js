@@ -1,5 +1,5 @@
 /*
-* 藤北网手机上传图片插件
+* 手机上传图片插件
 * 作者 黄自权
 * 版本 1.01
 * 
@@ -87,17 +87,62 @@
 					        oReader.onload = function(e){
 								//gif图片直接上传
 								FileExt=sdata[i]['filename'].substr(sdata[i]['filename'].lastIndexOf(".")).toLowerCase();
+								//如果是gif文件直接pic拿到上传数据
 								if(FileExt==".gif"){
 									pic=e.target.result.substr(e.target.result.indexOf("base64,")+7);	
 								}
 								previewimg.onload = function (e) {
+									//nwidth nheight 是全局变量
 								nwidth=previewimg.naturalWidth;
 								nheight=previewimg.naturalHeight;
 								sdata[previewimg.id]['swidth']=nwidth;
 								sdata[previewimg.id]['sheight']=nheight;
-								
+								console.log("原图宽+高："+nwidth+"+"+nheight);
+								//缩放比例到owidth oheight
 								sizemyimg(sysdata['owidth'],sysdata['oheight']);
 								FileExt=sdata[i]['filename'].substr(sdata[i]['filename'].lastIndexOf(".")).toLowerCase();
+								
+								//取得原始图片数据，进行双线性插值缩放
+				   				//newwidth;
+				   			    //newheight;
+				   			    /*
+								if(nwidth>newwidth||nheight>newheight)
+								{
+								    var canvas =document.getElementById("oldimg");
+								     canvas.width = nwidth;
+								     canvas.height = nheight;
+
+								     // Copy the image contents to the canvas
+								     var ctx = canvas.getContext("2d");
+								     ctx.drawImage(previewimg, 0, 0);
+									 
+									 var oldmdata=ctx.getImageData(0,0,nwidth,nheight);
+									  */
+									 /*
+					    				newscanvas = document.getElementById("myCanvas");
+					 				//新canvas高和宽
+					    				newscanvas.width  = newwidth;
+					    			    newscanvas.height = newheight;
+									  var newctx = newscanvas.getContext("2d");
+									  
+									 */
+									  /*
+		var imagedata=scale(oldmdata.data,nwidth,nheight,newwidth,newheight);
+									 
+     canvas.width = newwidth;
+     canvas.height = newheight;
+									 // var imagedata=new ImageData(imageScaled, newwidth, newheight);
+									  
+			 console.log("处理缩放"+imagedata.width+" "+imagedata.height); 
+									   ctx.putImageData(imagedata,0,0);
+								}
+							    
+								 */
+								 
+								 
+								 
+								 
+								//不是gif要用画布
 								if(FileExt!=".gif"){
 									drawimg(previewimg);
 								}
@@ -171,6 +216,7 @@
    			function drawimg(oimg){
 
    				canvas = document.getElementById("myCanvas");
+				//新canvas高和宽
    				canvas.width  = newwidth;
    			    canvas.height = newheight;
    				ctx = canvas.getContext('2d');

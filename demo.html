@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <META content="IE=11.000" http-equiv="X-UA-Compatible">
+<title>html5 images upload </title>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=yes">
+<link href="style.css" rel="stylesheet" type="text/css">
+<script src="jquery.min.js"></script>
+<script src="binaryajax.js"></script>
+<script src="exif.js"></script>
+<script src="megapix-image.js"></script>
+<script src="jpeg_encoder_basic.js"></script>
+<script src="bilinear.js"></script>
+<script src="wbupload.js"></script>	
+</head>
+<body>
+<div id="wrap">
+   
+  <div class="news_title">select image   </div>
+
+
+<form id="upload_form" method="post" action="newsadd.php">
+<input type="hidden" name="attrimg" id="attrimg" value="">                   
+<div class="content">
+	<div id="yiimg" class="imimglist"></div>
+	<div><label for="image_file" id="showerror">上传图片，选择或拍照</label></div>
+	<input type="file" accept="image/*" class="button block" multiple="multiple"  name="image_file" id="image_file"  />
+	<br/>
+	<div class="preview" id="preview"></div><br/>
+	<canvas id="oldimg"></canvas>
+	<canvas id="myCanvas"></canvas>
+	<script type="text/javascript">
+	$(document).ready(function(){
+		$("#image_file").upload({posturl:"newsupload.php"},{ttid:1,owidth:680,oheight:720},function(e){
+			$('#showerror').html('上传完成！');
+		    var r= e.target.responseText.split("|");
+		   if(r[0]!='error')
+			{ 
+				alert(r[0]);
+				$("#yiimg").html($("#yiimg").html()+"<img src='"+r[1]+"' width=45 height=45>");
+				$("#preview").html('');
+				if($("#attrimg").val()!=""){
+					$("#attrimg").val($("#attrimg").val()+"|"+r[0]);
+				}else{
+					$("#attrimg").val(r[0]);
+				}
+				$('#showerror').html('上传完成！继续添加图片或在下面添加内容');
+			}else{
+				$('#showerror').html(r[1]);
+			}
+		});
+	});
+	</script>
+</div>
+
+<div>
+<input id="title" name="title" type="text" placeholder="标题" required> 
+</div>
+<div>
+<textarea id="comment" name="comment" class="tbxCmt"  placeholder="内容"  style="margin-left:10px;height:200px;" ></textarea>
+</div>
+
+<div>
+ <input name="action" type="hidden" id="action" value="1" />  
+<input value="发表资讯" class="button block" name="Submit" id="Submit" type="submit">
+
+
+</div>
+</form>
+<img src="1.jpg"><br /><br />
+<img src="2.jpg">
+</body></html>
